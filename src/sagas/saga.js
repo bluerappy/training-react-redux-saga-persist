@@ -1,8 +1,7 @@
-import { takeLatest, call, put, spawn, all } from 'redux-saga/effects';
+import { takeLatest, call, put, spawn } from 'redux-saga/effects';
 import axios from 'axios';
 import{ AXIOS_GET_POSTS_REQUEST } from '../actions/getAction';
 import { watcherSagaById } from '../sagas/byIdSaga';
-
 
 export function* watcherSaga() {
   yield takeLatest(AXIOS_GET_POSTS_REQUEST , workerSaga);

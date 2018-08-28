@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {axiosGetPosts, axiosGetPostsById} from '../actions/getAction';
@@ -15,16 +17,15 @@ const styles = theme => ({
     },
   });
 
-class Display extends Component {
-  constructor(props) {
-    super(props);
+type Props = {
+  postsList : Array<Object>,
+  axiosGetPosts : Function,
+  axiosGetPostsById : Function,
+  classes : Object,
+};
 
-    this.state = {
-      comments: [],
-    };
-  }
-  
-
+class Display extends Component<Props> {
+  props : Props;
   componentWillMount() {    
     this.props.axiosGetPosts()
   }
@@ -43,8 +44,8 @@ class Display extends Component {
                 this.props.postsList.map(x => {
                     return(
                         <div >
-                            <p>{x.name}</p>
-                            <p>{x.email}</p>
+                            <p>NAME : {x.name}</p>
+                            <p> EMAIL : {x.email}</p>
                             <Button onClick={() => this.handleClick(x.id)} component={Link} to={'/byid/' + x.id} variant="contained" color="primary" className={classes.button}>
                               Go to {x.id}
                             </Button>
@@ -54,7 +55,7 @@ class Display extends Component {
             }
         </div>
     )
-    }
+  }
 
     else {
       return (
@@ -69,8 +70,6 @@ const mapStateToProps = state => ({
     postsList : state.posts.list,
     postsById : state.postsById.listById
 })
-
-
 
 function mapDispatchToProps(dispatch) {
     return {

@@ -1,28 +1,23 @@
+// @flow
+
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import {axiosGetPosts, axiosGetPostsById} from '../actions/getAction';
+import {axiosGetPostsById} from '../actions/getAction';
 import { bindActionCreators } from 'redux'
 
-class DisplayById extends Component {
-  constructor(props) {
-    super(props);
+type Props = {
+    postsById : Array<Object, String>
+}
 
-    this.state = {
-      comments: [],
-    };
-  }
-
-
+class DisplayById extends Component<Props> {
+props: Props;
   render() {
-      console.log("render by id",this.props.postsById)
-
       if (this.props.postsById) {
         return (
-        
             <div>
-                <p>{this.props.postsById.id}</p>
-                <p>{this.props.postsById.body}</p>
-                <p>{this.props.postsById.title}</p>
+                <p>ID : {this.props.postsById.id}</p>
+                <p>TITLE : {this.props.postsById.title}</p>
+                <p>BODY : {this.props.postsById.body}</p>
             </div>
         )
       } 
@@ -30,13 +25,11 @@ class DisplayById extends Component {
           <div>
               <p>NO DATA</p>
           </div>
-      )
-      
+      )   
   }
 }
 
 const mapStateToProps = state => ({
-    postsList : state.posts.list,
     postsById : state.postsById.listById
 })
 
