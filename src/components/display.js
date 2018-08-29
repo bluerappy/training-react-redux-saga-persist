@@ -26,7 +26,16 @@ type Props = {
 
 class Display extends Component<Props> {
   props : Props;
-  componentWillMount() {    
+  constructor() {
+    super();
+    this.state = {
+      posts: [],
+      currentPage: 2,
+      postsPerPage: 10
+    };
+    this.handle = this.handle.bind(this);
+  }
+  componentDidMount() {    
     this.props.axiosGetPosts()
   }
 
@@ -34,37 +43,56 @@ class Display extends Component<Props> {
     this.props.axiosGetPostsById(id)
   }
 
+  handle(event) {
+    this.setState({
+      currentPage: Number(event.target.id)
+    });
+  }
+
   render() {
+    const { currentPage, postsPerPage } = this.state;
     const { classes } = this.props;
 
-    if (this.props.postsList.length !==0) {
+    // DISPLAY CURRENT
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentposts = this.props.postsList.slice(indexOfFirstPost, indexOfLastPost);
+    
+    const renderposts = currentposts.map((post, index) => {
+      return <div key={index} style={{display : "flex"}}>
+                  <Button onClick={() => this.handleClick(post.id)} component={Link} to={'/byid/' + post.id} variant="contained" color="primary" className={classes.button}>
+                      Go to post {post.id}
+                  </Button>
+                  <p> NAME : {post.name}</p>
+                  <p> EMAIL : {post.email}</p>
+              </div>;
+    });
+   
+    // PAGE DISPLAY
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(this.props.postsList.length / postsPerPage); i++) {
+      pageNumbers.push(i);
+    }
+
+    const renderPageNumbers = pageNumbers.map(number => {
+      return (
+        <p key={number} id={number} onClick={this.handle} style={{border: "1px solid black", padding: "3px"}} >
+        {number}
+        </p>
+      );
+    });
+
       return (
         <div>
-            {
-                this.props.postsList.map(x => {
-                    return(
-                        <div >
-                            <p>NAME : {x.name}</p>
-                            <p> EMAIL : {x.email}</p>
-                            <Button onClick={() => this.handleClick(x.id)} component={Link} to={'/byid/' + x.id} variant="contained" color="primary" className={classes.button}>
-                              Go to {x.id}
-                            </Button>
-                        </div>
-                    )
-                })
-            }
+          <div>
+            {renderposts}
+          </div>
+          <div id="page-numbers" style={{display : "flex"}} >
+            {renderPageNumbers}
+          </div>
         </div>
-    )
-  }
-
-    else {
-      return (
-        <div><p>NO DATA</p></div>  
-  )
-}
-     
-  }
-}
+      )
+}}
 
 const mapStateToProps = state => ({
     postsList : state.posts.list,

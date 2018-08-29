@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import Display from './components/display.js';
 import DisplayById from './components/displayById.js';
-import DisplayByClick from './components/displayByClick.js'
+import DisplayByClick from './components/displayByClick.js';
 
 import './App.css';
 import {
@@ -30,9 +30,13 @@ class App extends Component<Props> {
         <Route path="/store" component={DisplayByClick} /> 
         <Route path="/byid/:id" component={DisplayById} /> 
         <Route path="/all" component={Display} /> 
-    
         </div>
+        
       </Router>
+      <div>
+        
+
+        </div>
       </div>
     );
   }

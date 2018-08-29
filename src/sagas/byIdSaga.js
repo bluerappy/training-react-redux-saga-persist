@@ -12,7 +12,7 @@ function* workerSagaById(action) {
     const data = response.data;
     
     yield put({ type: "AXIOS_GET_POSTS_BY_ID_SUCCESS", payload: data });
-  } catch (error) {console.log("saga data by id")
+  } catch (error) {
     yield put({ type: "AXIOS_GET_POSTS_BY_ID_FAILURE", payload: error });
   }
 

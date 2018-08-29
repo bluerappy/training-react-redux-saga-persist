@@ -6,7 +6,7 @@ import {axiosGetPostsById} from '../actions/getAction';
 import { bindActionCreators } from 'redux'
 
 type Props = {
-    postsById : Array<Object, String>
+    postsById : Object
 }
 
 class DisplayById extends Component<Props> {
